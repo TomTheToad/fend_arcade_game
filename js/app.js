@@ -1,6 +1,13 @@
 // TODO: test if es6 classes work with game engine
 // If SO: TODO: create a common game item class to fix redundancy
 
+// Constants
+// Allow debuggin calls
+const debug = false;
+// Player canvas origin location
+const playerOriginx = 202;
+const playerOriginy = 400;
+
 // TODO: move to exterior file
 // Enemy Class
 class Enemy {
@@ -20,11 +27,14 @@ class Enemy {
 };
 
 // TODO move to exerior file
+// TODO clean up the args
 // Player Class
 class Player {
-    constructor(sprite = 'images/char-boy.png', positionx) {
+    constructor(sprite = 'images/char-boy.png', x = playerOriginx, y = playerOriginy) {
         // Image asset
         this.sprite = sprite;
+        this.x = x;
+        this.y = y;
     }
 
     update(dt) {
@@ -70,7 +80,9 @@ document.addEventListener('keyup', function (e) {
 
 // Testing helpers
 function showCall(who) {
-    console.log(`function: ${who} has been called`);
+    if (debug) {
+        console.log(`function: ${who} has been called`);
+    }
 };
 
 

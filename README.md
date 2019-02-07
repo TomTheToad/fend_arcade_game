@@ -1,3 +1,5 @@
+# Cloned Copy of https://github.com/udacity/frontend-nanodegree-arcade-game for use as starter code.
+
 # Classic Arcade Game Clone Project
 
 ## Table of Contents

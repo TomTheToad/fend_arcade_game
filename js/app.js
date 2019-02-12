@@ -1,6 +1,15 @@
 // TODO: test if es6 classes work with game engine
 // If SO: TODO: create a common game item class to fix redundancy
 
+// Constants
+// Allow debuggin calls
+const debug = true;
+// Player canvas origin location
+const playerOriginx = 202;
+const playerOriginy = 380;
+const moveSize = 101;
+
+
 // Dynamic game item class
 class DynamicGameItem {
     constructor(imageURL, x = 0, y = 0) {
@@ -9,6 +18,13 @@ class DynamicGameItem {
         this.y = y;
     }
 
+    moveX() { return (ctx.canvas.width / 5); }
+    moveY() { return (ctx.canvas.height / 7); }
+
+    // TODO ? Use collidable?
+    boundsX() { return (ctx.canvas.width - this.moveX()); }
+    boundsY() { return (ctx.canvas.height - this.moveY()); }
+
     update(dt) {
         // Do something
     }
@@ -16,14 +32,25 @@ class DynamicGameItem {
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
+
+    moveUp() {
+        this.y -= this.moveY();
+    }
+
+    moveDown() {
+        this.y += this.moveY();
+    }
+
+    moveRight() {
+        this.x += this.moveX();
+    }
+
+    moveLeft() {
+        this.x -= this.moveX();
+    }
+
 }
 
-// Constants
-// Allow debuggin calls
-const debug = false;
-// Player canvas origin location
-const playerOriginx = 202;
-const playerOriginy = 400;
 
 // TODO: move to exterior file
 // Enemy Class extends DynamicGameItem
@@ -42,11 +69,24 @@ class Player extends DynamicGameItem {
     }
 
     handleInput(input) {
+        console.log(input);
         switch (input) {
-            case 'left': showCall('left');
-            case 'up': showCall('up');
-            case 'right': showCall('right');
-            case 'down': showCall('down');
+            case 'left':
+                showCall('left');
+                super.moveLeft();
+                break;
+            case 'up':
+                showCall('up');
+                super.moveUp();
+                break;
+            case 'right':
+                showCall('right');
+                super.moveRight();
+                break;
+            case 'down':
+                showCall('down');
+                super.moveDown();
+                break;
         }
     }
 };
@@ -64,13 +104,14 @@ let player = new Player();
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function (e) {
     // TODO: make allowed keys a const
+    console.log(e.keyCode);
     var allowedKeys = {
         37: 'left',
         38: 'up',
         39: 'right',
         40: 'down'
     };
-
+    console.log(player);
     player.handleInput(allowedKeys[e.keyCode]);
 });
 

@@ -9,8 +9,84 @@ const playerOriginx = 202;
 const playerOriginy = 380;
 const moveSize = 101;
 
+class GameBlock {
+    constructor(row, col, isOccupied = false, isPlayable = true) {
+        this.row = row;
+        this.col = col;
+        this.isOccupied = isOccupied;
+        this.isPlayable = isPlayable;
+    }
+}
+// Dynamic Game Grid Class
+// Create the game grid and define locations
+// Do not extend GameBlock
+class GameBlockGrid {
+    // Constructor
+    // TODO: review variable names
+    constructor(widthInPixels, heightInPixels, blockCountX, blockCountY) {
+        this.widthInPixels = widthInPixels;
+        this.heightInPixels = heightInPixels;
+        this.blockCountX = blockCountX;
+        this.blockCountY = blockCountY;
+        this.blockWith = (this.widthInPixels / this.blockCountX);
+        this.blockHeight = (this.heightInPixels / this.blockCountY);
+        this.blockCenter = {
+            x: this.blockWith / 2,
+            y: this.blockHeight / 2,
+        }
+    }
 
-// Dynamic game item class
+    getGameGrid() {
+        return this.buildBlockGrid();
+    }
+
+
+    // Build game grid
+    buildBlockGrid() {
+        let grid = [];
+        for (let y = 1; y <= this.blockCountY; y++) {
+            for (let x = 1; x <= this.blockCountX; x++) {
+                let newBlock = new GameBlock(y, x);
+                // console.log(newBlock);
+                grid.push(newBlock);
+                // this.blockGrid.push(newBlock);
+            }
+        }
+        return grid
+    }
+
+    // Set outer limit boundaries
+    // Determine movement locations within grid (allowable zones)
+    // Add start and end points
+    // Add any "special zones"
+}
+
+let gameGrid = new GameBlockGrid(505, 606, 5, 6);
+console.log(gameGrid.getGameGrid());
+// Collidable
+// Keep track of game pieces and locations
+// Watch for collisions.
+// Protocol?
+class Collidable {
+    // Constructor - get the game grid ... not extend?
+    // Place pieces in a game grid array
+    // Report on Collisions
+}
+
+// Interaction controller
+// Evaluates two pieces meeting each other
+// Determines the outcome of a collision
+class CollisionController extends Collidable {
+    // Constructor
+    // "listens for collisions from Collidable"
+    // Determines results
+    // Sets results
+}
+
+// TODO: Should this be inheritance or just independent classes?
+
+
+// Dynamic Game Item Class
 class DynamicGameItem {
     constructor(imageURL, x = 0, y = 0) {
         this.sprite = imageURL;

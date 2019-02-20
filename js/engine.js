@@ -80,6 +80,7 @@ var Engine = (function (global) {
     function update(dt) {
         updateEntities(dt);
         // checkCollisions();
+        // updateGameItems(dt);
     }
 
     /* This is called by the update function and loops through all of the
@@ -90,10 +91,17 @@ var Engine = (function (global) {
      * render methods.
      */
     function updateEntities(dt) {
+        allBlocks.forEach(function (block) {
+            block.update(dt);
+        });
         allEnemies.forEach(function (enemy) {
             enemy.update(dt);
         });
         player.update();
+    }
+
+    function updateGameItems(dt) {
+        gameItems.forEach(function (item) { item.update(dt) });
     }
 
     /* This function initially draws the "game level", it will then call
@@ -139,6 +147,7 @@ var Engine = (function (global) {
         }
 
         renderEntities();
+        // renderGameItems();
     }
 
     /* This function is called by the render function and is called on each game
@@ -146,6 +155,10 @@ var Engine = (function (global) {
      * on your enemy and player entities within app.js
      */
     function renderEntities() {
+        allBlocks.forEach(function (block) {
+            block.render();
+        });
+
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
@@ -155,6 +168,11 @@ var Engine = (function (global) {
 
         player.render();
         // TODO: add dynamic game block entity here?
+
+    }
+
+    function renderGameItems() {
+        gameItems.forEach(function (item) { item.render(); })
     }
 
     /* This function does nothing but it could have been a good place to

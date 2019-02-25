@@ -90,7 +90,6 @@ class GameBlockGrid {
     buildBlockGrid() {
         let grid = [];
         for (let y = 0; y < this.blockCountY; y++) {
-            console.log("y: ${y}");
             let locY = (this.blockHeight + this.YOffSet) * y;
             for (let x = 0; x < this.blockCountX; x++) {
                 let locX = (this.blockWidth + this.XOffSet) * x;
@@ -111,7 +110,6 @@ class GameBlockGrid {
     // Add any "special zones"
 }
 
-console.log("A");
 let gameGrid = new GameBlockGrid(505, 606, 5, 6, -18);
 console.log(gameGrid.getGameGrid());
 // Collidable

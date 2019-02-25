@@ -3,7 +3,7 @@
 
 // Constants
 // Allow debuggin calls
-const debug = true;
+const debug = false;
 // Player canvas origin location
 const playerOriginx = 202;
 const playerOriginy = 380;
@@ -52,10 +52,10 @@ class DynamicGameItem {
 
 // TODO: create a default bg image
 class GameBlock extends DynamicGameItem {
-    constructor(row, col, x, y, bgImage = "images/water-block.png", isOccupied = false, isPlayable = true) {
+    constructor(col, row, x, y, bgImage = "images/grass-block.png", isOccupied = false, isPlayable = true) {
         super(bgImage, x, y);
-        this.row = row;
         this.col = col;
+        this.row = row;
         // TODO: replace with an object of a certain class
         this.isOccupied = isOccupied;
         this.isPlayable = isPlayable;
@@ -90,6 +90,7 @@ class GameBlockGrid {
     buildBlockGrid() {
         let grid = [];
         for (let y = 0; y < this.blockCountY; y++) {
+            console.log("y: ${y}");
             let locY = (this.blockHeight + this.YOffSet) * y;
             for (let x = 0; x < this.blockCountX; x++) {
                 let locX = (this.blockWidth + this.XOffSet) * x;
@@ -100,12 +101,17 @@ class GameBlockGrid {
         return grid
     }
 
+    // buildBlockGrid(blockArray) {
+    //     // buid grid from a give array
+    // }
+
     // Set outer limit boundaries
     // Determine movement locations within grid (allowable zones)
     // Add start and end points
     // Add any "special zones"
 }
 
+console.log("A");
 let gameGrid = new GameBlockGrid(505, 606, 5, 6, -18);
 console.log(gameGrid.getGameGrid());
 // Collidable
@@ -146,8 +152,8 @@ class Player extends DynamicGameItem {
         super(sprite, x, y)
     }
 
+    // TODO: move this?
     handleInput(input) {
-        console.log(input);
         switch (input) {
             case 'left':
                 showCall('left');
@@ -195,14 +201,13 @@ let allBlocks = gameGrid.getGameGrid();
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function (e) {
     // TODO: make allowed keys a const
-    console.log(e.keyCode);
+    // console.log(e.keyCode);
     var allowedKeys = {
         37: 'left',
         38: 'up',
         39: 'right',
         40: 'down'
     };
-    console.log(player);
     player.handleInput(allowedKeys[e.keyCode]);
 });
 
@@ -212,8 +217,6 @@ function showCall(who) {
         console.log(`function: ${who} has been called`);
     }
 };
-
-
 
 // // Enemies our player must avoid
 // var Enemy = function() {

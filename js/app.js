@@ -29,6 +29,8 @@ class DynamicGameItem {
     }
 
     render() {
+        // TODO: will this be the correct height and width?
+        // ctx.clearRect(this.x, this.y, this.sprite.width, this.sprite.height);
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 
@@ -52,7 +54,7 @@ class DynamicGameItem {
 
 // TODO: create a default bg image
 class GameBlock extends DynamicGameItem {
-    constructor(col, row, x, y, bgImage = "images/grass-block.png", isOccupied = false, isPlayable = true) {
+    constructor(col, row, x, y, bgImage = "images/stone-block.png", isOccupied = false, isPlayable = true) {
         super(bgImage, x, y);
         this.col = col;
         this.row = row;
@@ -80,6 +82,7 @@ class GameBlockGrid {
             x: this.blockWidth / 2,
             y: this.blockHeight / 2,
         }
+        this.grid = [];
     }
 
     getGameGrid() {
@@ -88,16 +91,18 @@ class GameBlockGrid {
 
     // Build game grid
     buildBlockGrid() {
-        let grid = [];
+        this.grid = [];
         for (let y = 0; y < this.blockCountY; y++) {
             let locY = (this.blockHeight + this.YOffSet) * y;
             for (let x = 0; x < this.blockCountX; x++) {
                 let locX = (this.blockWidth + this.XOffSet) * x;
                 let newBlock = new GameBlock(x, y, locX, locY);
-                grid.push(newBlock);
+                this.grid.push(newBlock);
             }
         }
-        return grid
+        // TODO: make this private?
+        // User getter / setter?
+        return this.grid
     }
 
     // buildBlockGrid(blockArray) {

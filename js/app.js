@@ -7,22 +7,24 @@ const debug = false;
 // Player canvas origin location
 const playerOriginx = 202;
 const playerOriginy = 380;
-const moveSize = 101;
+// const moveSize = 101;
 
-// Dynamic Game Item Class
-class DynamicGameItem {
+const GameItemInteractions = {
+    GOOD: "something good",
+    BAD: "something bad",
+    BlOCK_SPACE: "cannot move into space",
+    BUFF: "player buff",
+    NEUTRAL: "nothing happens"
+}
+Object.freeze(GameItemInteractions);
+
+// Game Item Class
+class GamePiece {
     constructor(imageURL, x = 0, y = 0) {
         this.sprite = imageURL;
         this.x = x;
         this.y = y;
     }
-
-    moveX() { return (ctx.canvas.width / 5); }
-    moveY() { return (ctx.canvas.height / 7); }
-
-    // TODO ? Use collidable?
-    boundsX() { return (ctx.canvas.width - this.moveX()); }
-    boundsY() { return (ctx.canvas.height - this.moveY()); }
 
     update(dt) {
         // Do something
@@ -34,33 +36,32 @@ class DynamicGameItem {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 
-    moveUp() {
-        this.y -= this.moveY();
+}
+
+class GameItem extends GamePiece {
+    constructor(imageURL, x = 0, y = 0, playerEffect = GameItemInteractions.GOOD) {
+        super(imageURL, x, y);
+        this.PlayerEffect = playerEffect;
     }
 
-    moveDown() {
-        this.y += this.moveY();
-    }
-
-    moveRight() {
-        this.x += this.moveX();
-    }
-
-    moveLeft() {
-        this.x -= this.moveX();
+    getEffect() {
+        // TODO: change score?
+        return playerEffect;
     }
 
 }
 
 // TODO: create a default bg image
-class GameBlock extends DynamicGameItem {
-    constructor(col, row, x, y, bgImage = "images/stone-block.png", isOccupied = false, isPlayable = true) {
+class GameBlock extends GameItem {
+    constructor(col, row, x, y, bgImage = "images/stone-block.png", isOccupied = false, isPlayable = true, playerEffect = GameItemInteractions.NEUTRAL) {
         super(bgImage, x, y);
         this.col = col;
         this.row = row;
         // TODO: replace with an object of a certain class
+        // or remove entirely
         this.isOccupied = isOccupied;
         this.isPlayable = isPlayable;
+        this.playerEffect = playerEffect;
     }
 }
 // GameBlockGrid Class
@@ -113,6 +114,37 @@ class GameBlockGrid {
     // Determine movement locations within grid (allowable zones)
     // Add start and end points
     // Add any "special zones"
+}
+
+// Dynamic Game Item Class
+class DynamicGameItem extends GamePiece {
+    constructor(imageURL, x = 0, y = 0) {
+        super(imageURL, x, y);
+    }
+
+    moveX() { return (ctx.canvas.width / 5); }
+    moveY() { return (ctx.canvas.height / 7); }
+
+    // TODO ? Use collidable?
+    boundsX() { return (ctx.canvas.width - this.moveX()); }
+    boundsY() { return (ctx.canvas.height - this.moveY()); }
+
+    moveUp() {
+        this.y -= this.moveY();
+    }
+
+    moveDown() {
+        this.y += this.moveY();
+    }
+
+    moveRight() {
+        this.x += this.moveX();
+    }
+
+    moveLeft() {
+        this.x -= this.moveX();
+    }
+
 }
 
 let gameGrid = new GameBlockGrid(505, 606, 5, 6, -18);

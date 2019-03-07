@@ -91,12 +91,17 @@ var Engine = (function (global) {
      * render methods.
      */
     function updateEntities(dt) {
-        allBlocks.forEach(function (block) {
+        // TODO: make this one call
+        // BGLayer.update();
+        gameGrid.grid.forEach(function (block) {
             block.update(dt);
         });
         allEnemies.forEach(function (enemy) {
             enemy.update(dt);
         });
+        // allItems.forEach(function (item) {
+        //     item.update(dt);
+        // });
         player.update();
     }
 
@@ -116,11 +121,11 @@ var Engine = (function (global) {
          */
         var rowImages = [
             'images/water-block.png',   // Top row is water
-            'images/stone-block.png',   // Row 1 of 3 of stone
-            'images/stone-block.png',   // Row 2 of 3 of stone
-            'images/stone-block.png',   // Row 3 of 3 of stone
-            'images/grass-block.png',   // Row 1 of 2 of grass
-            'images/grass-block.png'    // Row 2 of 2 of grass
+            'images/water-block.png',   // Row 1 of 3 of stone
+            'images/water-block.png',   // Row 2 of 3 of stone
+            'images/water-block.png',   // Row 3 of 3 of stone
+            'images/water-block.png',   // Row 1 of 2 of grass
+            'images/water-block.png'    // Row 2 of 2 of grass
         ],
             numRows = 6,
             numCols = 5,
@@ -155,15 +160,20 @@ var Engine = (function (global) {
      * on your enemy and player entities within app.js
      */
     function renderEntities() {
-        allBlocks.forEach(function (block) {
-            block.render();
-        });
+        // allBlocks.forEach(function (block) {
+        //     block.render();
+        // });
+        gameGrid.render();
 
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
         allEnemies.forEach(function (enemy) {
             enemy.render();
+        });
+
+        allItems.forEach(function (item) {
+            item.render();
         });
 
         player.render();
@@ -187,12 +197,16 @@ var Engine = (function (global) {
      * draw our game level. Then set init as the callback method, so that when
      * all of these images are properly loaded our game will start.
      */
+
+    // TODO: fix - this is stupid
     Resources.load([
         'images/stone-block.png',
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/Gem Blue.png',
+        'images/Gem Green.png'
     ]);
     Resources.onReady(init);
 

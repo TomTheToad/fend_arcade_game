@@ -16,39 +16,66 @@ class GamePiece {
 }
 
 class DynamicGamePiece extends GamePiece {
-    constructor(image, x, y) {
+    constructor(image, x, y, distMoveX, distMoveY) {
         super(image, x, y)
+        this.distMoveX = distMoveX;
+        this.distMoveY = distMoveY;;
+    }
+
+    moveUp(howFar = this.distMoveY) {
+        this.y -= howFar;
+    }
+
+    moveDown(howFar = this.distMoveY) {
+        this.y += howFar;
+    }
+
+    moveRight(howFar = this.distMoveX) {
+        this.x += howFar;
+    }
+
+    moveLeft(howFar = this.distMoveX) {
+        this.x -= howFar;
+    }
+
+    getCurrentPosition() {
+        return { x: this.x, y: this.y }
     }
 }
 
-let player = new DynamicGamePiece('images/char-boy.png', 200, 370);
-let enemy1 = new DynamicGamePiece('images/enemy-bug.png', 10, 10);
+let player = new DynamicGamePiece('images/char-boy.png', 200, 370, 101, 101);
+let enemy1 = new DynamicGamePiece('images/enemy-bug.png', 10, 10, 101, 101);
 let allEnemies = [enemy1];
 
 class GameController {
-    constructor(player, allEnemies) {
+    constructor(player, allEnemies, gameAreaWidth, gameAreaHeight) {
         this.player = player;
         this.allEnemies = allEnemies;
         this.dt = 1;
         // Make X and Y dynamic
-        this.moveDistance = 101;
         // Take into account block design
+        // To come from game engine. Possibly in an update method
+        this.gameAreaWidth = gameAreaWidth;
+        this.gameAreaHeight = gameAreaHeight;
     }
 
     handleInput(input) {
-        console.log(input);
         switch (input) {
             case 'up':
-                player.y -= this.moveDistance;
+                // TODO: check current position prior to calling move.
+                console.log(`game width: ${this.gameAreaWidth}`);
+                console.log(`game height: ${this.gameAreaHeight}`);
+
+                this.player.moveUp();
                 break;
             case 'down':
-                player.y += this.moveDistance;
+                this.player.moveDown();
                 break;
             case 'right':
-                player.x += this.moveDistance;
+                this.player.moveRight();
                 break;
             case 'left':
-                player.x -= this.moveDistance;
+                this.player.moveLeft();
                 break;
         }
 
@@ -56,6 +83,14 @@ class GameController {
 
     getGameItems() {
         return [player, allEnemies];
+    }
+
+    setGameAreaWidth(width) {
+        this.gameAreaWidth = width;
+    }
+
+    setGameAreaHeight(height) {
+        this.gameAreaHeight = height;
     }
 
     renderAll() {
@@ -73,7 +108,8 @@ class GameController {
     }
 }
 
-let gameController = new GameController(player, allEnemies);
+// TODO make game area dynamic
+let gameController = new GameController(player, allEnemies, 505, 606);
 
 // Enemies our player must avoid
 // var Enemy = function() {

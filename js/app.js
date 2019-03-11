@@ -1,3 +1,4 @@
+// TODO: change name to models? break up into individual files?
 // Master base class GamePiece
 class GamePiece {
     constructor(image, x, y) {
@@ -19,7 +20,8 @@ class DynamicGamePiece extends GamePiece {
     constructor(image, x, y, distMoveX, distMoveY) {
         super(image, x, y)
         this.distMoveX = distMoveX;
-        this.distMoveY = distMoveY;;
+        // Use offset here?
+        this.distMoveY = distMoveY - 18;
     }
 
     moveUp(howFar = this.distMoveY) {
@@ -79,6 +81,7 @@ class DynamicGamePiece extends GamePiece {
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
+// TODO: move to controller?
 document.addEventListener('keyup', function (e) {
     var allowedKeys = {
         37: 'left',

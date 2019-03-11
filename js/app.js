@@ -21,6 +21,7 @@ class DynamicGamePiece extends GamePiece {
         super(image, x, y)
         this.distMoveX = distMoveX;
         // Use offset here?
+        // TODO: Should the GC handle all movement logic?
         this.distMoveY = distMoveY - 18;
     }
 

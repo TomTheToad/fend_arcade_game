@@ -1,3 +1,18 @@
+// Sphere of influence
+// Images may vary in size within the canvas. Will need to figure out how to handle edge case.
+// var img = document.getElementById('imageid'); 
+// //or however you get a handle to the IMG
+// var width = img.clientWidth;
+// var height = img.clientHeight;
+class SphereOfInfluence {
+    constructor(domImageElement) {
+        this.domImageElement = domImageElement;
+        this.width = domImageElement.clientWidth;
+        this.height = domImageElement.clientHeight;
+        this.center = domImageElement
+    }
+}
+
 // TODO: change name to models? break up into individual files?
 // Master base class GamePiece
 class GamePiece {
@@ -17,32 +32,46 @@ class GamePiece {
 }
 
 class DynamicGamePiece extends GamePiece {
-    constructor(image, x, y, distMoveX, distMoveY) {
+    constructor(image, x, y, xMoveModifier = 1) {
         super(image, x, y)
-        this.distMoveX = distMoveX;
+        this.xMoveModifier = xMoveModifier;
+        this.originX = x;
+        this.originY = y;
+        // this.distMoveX = distMoveX;
         // Use offset here?
         // TODO: Should the GC handle all movement logic?
-        this.distMoveY = distMoveY - 18;
+        // this.distMoveY = distMoveY - 18;
+        // TODO: add area of effect
     }
 
-    moveUp(howFar = this.distMoveY) {
+    // TODO: keep howFar? Allow for easily changing move distance in an instance.
+    moveUp(howFar) {
         this.y -= howFar;
     }
 
-    moveDown(howFar = this.distMoveY) {
+    moveDown(howFar) {
         this.y += howFar;
     }
 
-    moveRight(howFar = this.distMoveX) {
-        this.x += howFar;
+    moveRight(howFar) {
+        this.x += howFar * this.xMoveModifier;
     }
 
-    moveLeft(howFar = this.distMoveX) {
-        this.x -= howFar;
+    moveLeft(howFar) {
+        this.x -= howFar * this.xMoveModifier;
     }
 
     getCurrentPosition() {
-        return { x: this.x, y: this.y }
+        return {
+            x: this.x,
+            y: this.y,
+        }
+    }
+
+    // Reset to starting position
+    reset() {
+        this.x = this.originX;
+        this.y = this.originY;
     }
 }
 
@@ -88,7 +117,8 @@ document.addEventListener('keyup', function (e) {
         37: 'left',
         38: 'up',
         39: 'right',
-        40: 'down'
+        40: 'down',
+        80: 'pause'
     };
 
     gameController.handleInput(allowedKeys[e.keyCode]);
